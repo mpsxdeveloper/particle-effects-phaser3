@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Particle Effects - Phaser3</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="icon" type="image/x-icon" href="logo.png">
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    </head>
+    
+    <body>
+        
+        <div id="phaser" style="margin: 0 auto; width:800px;"></div>
+        
+    <script>
+        class Example extends Phaser.Scene {
+            
+            constructor() {
+                super();
+                this.sprites = [];
+            }
+            
+            preload() {
+            this.load.image('particle', 'logo.png');
+            this.load.image('logo', 'image.png');
+            }
+
+            create() {
+                for(let i = 0; i < 250; i++) {
+                    const x = Phaser.Math.Between(-128, 800);
+                    const y = Phaser.Math.Between(-128, 600);
+                    const image = this.add.image(x, y, 'particle');
+                    image.setBlendMode(Phaser.BlendModes.NORMAL);
+                    this.sprites.push({ s: image, r: 2 + Math.random() * 2 });
+                }
+                this.add.image(400, 323, 'logo').setBlendMode(Phaser.BlendModes.HUE);
+            }
+
+            update() {
+                for(let i = 0; i < this.sprites.length; i++) {
+                    const sprite = this.sprites[i].s;
+                    sprite.y -= this.sprites[i].r;
+                    if(sprite.y < -256) {
+                        sprite.y = 600;
+                    }
+                }
+            }
+        
+        }
+
+        const config = {
+            type: Phaser.WEBGL,
+            width: 800,
+            height: 600,
+            backgroundColor: '#fff',
+            parent: 'phaser',
+            scene: [ Example ]
+        };
+
+        const game = new Phaser.Game(config);
+
+    </script>
+        
+    </body>
+    
+</html>
